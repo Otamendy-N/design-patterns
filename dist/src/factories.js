@@ -1,74 +1,70 @@
-import { ShoesFactory } from "./interfaces";
-import { Assambly, Package } from "./package";
+import { Assambly } from "./package";
 import { Addidas, Nikes } from "./shoes";
-import { color } from "./types";
-
 // these are implementations of a Abstract shoes Factory that implements
 // also the Singleton pattern to make only one instance of each in the
 // entire application.
-export class AddidasFactory implements ShoesFactory<Addidas> {
-    private static factory: AddidasFactory | null = null;
-    private location: string;
-    private assambly: Assambly<Addidas> | null = null;
-    private constructor(defaultLocation: string) {
+export class AddidasFactory {
+    static factory = null;
+    location;
+    assambly = null;
+    constructor(defaultLocation) {
         this.location = defaultLocation;
     }
-    static getFactory(defaultLocation: string = "Panama"): AddidasFactory {
+    static getFactory(defaultLocation = "Panama") {
         if (this.factory === null) {
             this.factory = new AddidasFactory(defaultLocation);
         }
         return this.factory;
     }
-    createShoesPackage(ammount: number): Package<Addidas> {
+    createShoesPackage(ammount) {
         if (this.assambly === null) {
-            this.assambly = new Assambly<Addidas>();
+            this.assambly = new Assambly();
         }
-        let items: Addidas[] = [];
+        let items = [];
         for (let i = 0; i < ammount; i++) {
             let color = i % 3 === 0 ? "red" : i % 3 === 2 ? "white" : "black";
             let size = 38 + (i % 6);
             items[i] = {
                 size,
-                color: color as color,
-            } as unknown as Addidas;
+                color: color,
+            };
         }
         return this.assambly.packItems(items, "plastic");
     }
-    createShoesPair(size: number, color: color): Addidas {
+    createShoesPair(size, color) {
         let shoes = new Addidas(size, color);
         return shoes;
     }
-    printLocation(): void {
+    printLocation() {
         console.log("[Info] Addidas Factory at " + this.location);
     }
-    changeLocation(newLocation: string): void {
+    changeLocation(newLocation) {
         this.location = newLocation;
     }
 }
-
-export class NikesFactory implements ShoesFactory<Nikes> {
-    private static factory: NikesFactory | null = null;
-    private location: string;
-    private assambly: Assambly<Nikes> | null = null;
-    private shoesCache: { [key: string]: Nikes } = {};
-    private constructor(defaultLocation: string) {
+export class NikesFactory {
+    static factory = null;
+    location;
+    assambly = null;
+    shoesCache = {};
+    constructor(defaultLocation) {
         this.location = defaultLocation;
     }
-    static getFactory(defaultLocation: string = "Panama"): NikesFactory {
+    static getFactory(defaultLocation = "Panama") {
         if (this.factory === null) {
             this.factory = new NikesFactory(defaultLocation);
         }
         return this.factory;
     }
-    createShoesPair(size: number, color: color): Nikes {
+    createShoesPair(size, color) {
         let shoes = new Nikes(size, color);
         return shoes;
     }
-    createShoesPackage(ammount: number): Package<Nikes> {
+    createShoesPackage(ammount) {
         if (this.assambly === null) {
-            this.assambly = new Assambly<Nikes>();
+            this.assambly = new Assambly();
         }
-        let items: Nikes[] = [];
+        let items = [];
         for (let i = 0; i < ammount; i++) {
             let color = i % 3 === 0 ? "red" : i % 3 === 2 ? "white" : "black";
             let size = 38 + (i % 6);
@@ -76,18 +72,18 @@ export class NikesFactory implements ShoesFactory<Nikes> {
             if (!this.shoesCache[key]) {
                 let item = {
                     size,
-                    color: color as color,
-                } as unknown as Nikes;
+                    color: color,
+                };
                 this.shoesCache[key] = item;
             }
             items[i] = this.shoesCache[key];
         }
         return this.assambly.packItems(items, "plastic");
     }
-    printLocation(): void {
+    printLocation() {
         console.log("[Info] Nikes Factory at " + this.location);
     }
-    changeLocation(newLocation: string): void {
+    changeLocation(newLocation) {
         this.location = newLocation;
     }
 }

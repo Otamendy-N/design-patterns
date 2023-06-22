@@ -1,15 +1,17 @@
+import { PrintableContainer } from "./interfaces";
 import { wrapper } from "./types";
 
 // this will be my implementation of a builder pattern
-export class Package<T> {
+export class Package<T> implements PrintableContainer {
   private hasValidWrapper = false;
   private wrapper: wrapper = "none";
   private itemsAmount: number = 0;
   private setOfItems: Set<T> = new Set();
   private isSigned = false;
 
-  printItemsAmmount() {
-    console.log(`[Info] This package has ${this.itemsAmount} items.`);
+  listGoods(): void {
+    console.log('[Info] Package goods: ');
+    console.table(this.open());
   }
 
   open(): Set<T> {
@@ -18,7 +20,7 @@ export class Package<T> {
 
   insertItems(items: T[]): this {
     this.itemsAmount = items.length;
-    this.setOfItems = new Set(items);
+    this.setOfItems = items as unknown as Set<T>
     return this;
   }
 
