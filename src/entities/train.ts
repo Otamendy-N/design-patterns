@@ -1,5 +1,5 @@
-import { chuchu } from "./decorators";
-import { Station, PrintableContainer } from "./interfaces";
+import { chuchu } from "../decorators";
+import { Station, PrintableContainer } from "../interfaces";
 import { Package } from "./package";
 
 export class Train<Product> implements PrintableContainer {

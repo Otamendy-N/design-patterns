@@ -1,5 +1,5 @@
-import { PrintableContainer } from "./interfaces";
-import { wrapper } from "./types";
+import { PrintableContainer } from "../interfaces";
+import { wrapper } from "../types";
 
 // this will be my implementation of a builder pattern
 export class Package<T> implements PrintableContainer {

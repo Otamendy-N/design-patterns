@@ -1,7 +1,7 @@
-import { ShoesFactory } from "./interfaces";
+import { ShoesFactory } from "../interfaces";
 import { Assambly, Package } from "./package";
 import { Addidas, Nikes } from "./shoes";
-import { color } from "./types";
+import { color } from "../types";
 
 // these are implementations of a Abstract shoes Factory that implements
 // also the Singleton pattern to make only one instance of each in the

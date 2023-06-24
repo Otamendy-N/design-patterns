@@ -1,5 +1,5 @@
-import { Shoes } from "./interfaces";
-import { color } from "./types";
+import { Shoes } from "../interfaces";
+import { color } from "../types";
 
 
 export class Addidas implements Shoes {

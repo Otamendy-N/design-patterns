@@ -1,4 +1,4 @@
-import { Station, Shoes, ShoesFactory } from "./interfaces";
+import { Station, Shoes, ShoesFactory } from "../interfaces";
 import { Package } from "./package";
 
 export class TrainStation implements Station<Shoes> {

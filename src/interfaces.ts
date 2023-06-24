@@ -1,4 +1,4 @@
-import { Package } from "./package";
+import { Package } from "./entities/package";
 import { color } from "./types";
 
 // this is for impementing the composite pattern used to print stuff
@@ -23,4 +23,8 @@ export interface ShoesFactory<T> {
 export interface Shoes {
   use(): void;
   printProperties(): void;
+}
+
+export interface ISubscriber {
+  getNotification(msg: string): void
 }

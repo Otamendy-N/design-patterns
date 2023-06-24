@@ -1,8 +1,10 @@
-import { AddidasFactory, NikesFactory } from "./src/factories";
-import { StorageGuardPost } from "./src/storage";
-import { Train } from "./src/train";
-import { TrainStation } from "./src/trainStation";
-import { measureExecutionTime } from "./src/utilities";
+import { AddidasFactory, NikesFactory } from "./src/entities/factories";
+import { StorageGuardPost } from "./src/entities/storage";
+import { Train } from "./src/entities/train";
+import { TrainStation } from "./src/entities/trainStation";
+import { Truck } from "./src/entities/truck";
+import { Shop } from "./src/entities/shop";
+import { Client } from "./src/entities/client";
 /**
  * Here i am trying to implement the following creational design patterns:
  * - Singleton
@@ -18,35 +20,46 @@ import { measureExecutionTime } from "./src/utilities";
  * - Flyweight - in the creation of shoes
  * - Facade
  */
-// adaptees, where items are been produced
-// this are singleton factory intances
-let nikesFactory = NikesFactory.getFactory("Mexico");
-nikesFactory.printLocation();
-let addidasFactory = AddidasFactory.getFactory("Canada");
-addidasFactory.printLocation();
 function main() {
+    // adaptees, where items are been produced
+    // this are singleton factory intances
+    let nikesFactory = NikesFactory.getFactory("Mexico");
+    nikesFactory.printLocation();
+    let addidasFactory = AddidasFactory.getFactory("Canada");
+    addidasFactory.printLocation();
     // one pair of each company
     // let nikies = nikesFactory.createShoesPair(42, "red");
     // let addidas = addidasFactory.createShoesPair(39, "black");
-    let nikiesPackage = nikesFactory.createShoesPackage(200000);
-    let addidasPackage = addidasFactory.createShoesPackage(200000);
     // adapters for loading cargo into the train.
     // here i'm also implementing the bridge pattern if you think about it.
     let nikesStation = new TrainStation(nikesFactory, "Nikes Metropolitan.");
     let addidasStation = new TrainStation(addidasFactory, "Addidas Metropolitan.");
     // our client in where the cargo will be load
     let train = new Train();
+    let guardsPost = new StorageGuardPost();
     train.goToStation(nikesStation);
     train.loadCargo();
-    // train.listGoods();
-    train.deliverCargo();
+    let nikesCargo = train.deliverCargo();
+    guardsPost.placeGoods([...nikesCargo]);
     train.goToStation(addidasStation);
     train.loadCargo();
-    // train.listGoods();
-    let cargo = train.deliverCargo();
+    let addidasCargo = train.deliverCargo();
+    guardsPost.placeGoods([...addidasCargo]);
+    let truck = new Truck();
+    guardsPost.giveGoodsTo(truck);
+    let shoesShop = new Shop();
+    truck.deliverCargoToShop(shoesShop);
+    let jose = new Client("Jose");
+    let manoli = new Client("Manoli");
+    let pedro = new Client("Pedro");
+    shoesShop.registerClient(jose);
+    shoesShop.registerClient(manoli);
+    shoesShop.registerClient(pedro);
+    shoesShop.notifyClients("ya han llegado sus nuevos zapatos!!");
     // the guards post acts as a proxy for the actual Storage
-    let guardsPost = new StorageGuardPost();
-    guardsPost.placeGoods([...cargo]);
 }
-let totalTime = measureExecutionTime(main);
-console.log("[SYSTEM INFO] Total excecution of this program took: " + totalTime + " ms.");
+main();
+// let totalTime = measureExecutionTime(main);
+// console.log(
+//     "[SYSTEM INFO] Total excecution of this program took: " + totalTime + " ms."
+// );
