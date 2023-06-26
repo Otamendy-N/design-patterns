@@ -26,5 +26,33 @@ export interface Shoes {
 }
 
 export interface ISubscriber {
+  getIdentifier(): string;
   getNotification(msg: string): void
+}
+
+export interface IStrategy {
+  excecute(data: string): void
+}
+
+export interface ICommand {
+  excecute(): any
+  undo(): void
+}
+
+export interface Iterator<T> {
+  hasNext(): boolean
+  next(): T
+}
+
+export interface IMediator {
+  sendMessage(message: string, sender: IColleague): void;
+  registerColleague(colleague: IColleague): void;
+  unregisterColleague(colleague: IColleague): void;
+}
+
+export interface IColleague {
+  setMediator(mediator: IMediator): void;
+  getIdentifier(): string;
+  send(message: string): void;
+  receive(message: string, colleague: IColleague): void;
 }
